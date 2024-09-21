@@ -1,0 +1,2 @@
+# Referenced at /storage/emulated/0/Android/NutriCalc/app/build/bin/AndroidManifest.xml:21
+-keep class com.my.nutricalc.MainActivity { <init>(); }
