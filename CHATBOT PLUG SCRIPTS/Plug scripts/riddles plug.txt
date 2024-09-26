@@ -1,0 +1,22 @@
+response = invokeurl
+[
+	url :"https://api.api-ninjas.com/v1/riddles"
+	type :GET
+	headers:{"X-Api-Key":"XxB7bpM7giH+Vh7KqR79Fg==rsC7oP8Czza5Bx6t"}
+];
+q = list();
+a = list();
+for each  i in response
+{
+	Q = i.getJson("question");
+	q.add(Q);
+}
+for each  j in response
+{
+	A = j.getJson("answer");
+	a.add(A);
+}
+result = Map();
+result.put("question",q.get(0));
+result.put("answer",a.get(0));
+return result;

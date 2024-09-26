@@ -1,0 +1,17 @@
+response = invokeurl
+[
+	url :"https://api.api-ninjas.com/v1/facts?limit=3"
+	type :GET
+	headers:{"X-Api-Key":"XxB7bpM7giH+Vh7KqR79Fg==rsC7oP8Czza5Bx6t"}
+];
+fact = list();
+for each  i in response
+{
+	facts = i.getJson("fact");
+	fact.add(facts);
+}
+result = Map();
+result.put("facta",fact.get(0));
+result.put("factb",fact.get(1));
+result.put("factc",fact.get(2));
+return result;
