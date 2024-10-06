@@ -1,0 +1,25 @@
+body{   
+    background: #eee;  
+}  
+#frm{  
+    border: solid gray 1px;  
+    width:100%;  
+    border-radius: 50px;  
+    
+    background: white;  
+    padding: 50px;  
+}  
+#btn{  
+    color: #fff;  
+    background: #337cb7;  
+    padding: 7px;  
+    margin-left: 70%; 
+} 
+#complaint{
+ 
+height:50px;
+width:100%;
+}
+
+
+

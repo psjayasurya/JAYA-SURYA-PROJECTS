@@ -1,0 +1,46 @@
+body{   
+    background: #eee;  
+}  
+#frm{  
+    border: solid gray 1px;  
+    width:100%;  
+    border-radius: 50px;  
+     margin-right:200px; 
+    background: white;  
+    padding:25px;
+    
+}  
+#btn{  
+    color: #fff; 
+ border: solid gray 1px;   
+   background: #337cb7;   
+border-radius: 40px;  
+    padding: 10px;  
+    margin-left:250px;
+} 
+#showpass{
+margin-left:30px;
+    
+}
+#pass{
+margin-left:8px;
+
+}
+#faculty{
+
+ margin-left: 28px  
+   
+
+}
+#dept{
+margin-left:37px;
+}
+#date1{
+margin-left:20px;
+
+}
+#forgot{
+
+ margin-left: 25px;
+} 
+

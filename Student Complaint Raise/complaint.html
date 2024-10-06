@@ -1,0 +1,67 @@
+<html>  
+<head>  
+    <title>PHP login system</title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    
+    <link rel = "stylesheet" type = "text/css" href = "compstyle.css">   
+</head>  
+<header>
+    <center><h1 style="margin-top: 50px;font-size:20px;margin-left:70px;">Student Complaint Raise System</h1></center>
+</header>
+<body>  
+    <div id = "frm">  
+          
+        <form name="f1" action = "compinsert.php" onsubmit = "return validation()" method = "POST">
+            <label><b>Dept:</label>
+            <select id="dept" name="dept" required>
+                <option><b>CSE</option>
+                <option><b>ECE</option>
+                <option><b>MECH</option>
+                <option><b>IT</option>
+                <option><b>CIVIL</option>
+
+            </select>
+            <p>    
+                <label><b>Date:</label> 
+                <input type =  "date" id = "date" name = "date" required/>  
+            </p>   
+            <center> <textarea id="complaint" name="complaint" placeholder="Type your complaint......" required></textarea>
+            
+            <p>     
+                <input type =  "submit" id = "btn" value = "Submit" />  
+            </p> </center>
+
+            
+             
+        </form>  
+    </div>  
+    
+    
+    <script>  
+            function validation()  
+            {  
+                var id=document.f1.user.value;  
+                var ps=document.f1.pass.value;  
+                if(id.length=="" ) {  
+                    alert("empty complaint.....");  
+                    return false;  
+                }  
+                else  
+                {  
+                    if(id.length=="") {  
+                        alert("User Name is empty");  
+                        return false;  
+                    }   
+                    
+                }                             
+            } 
+            
+            const textarea = document.getElementById('complaint');
+            textarea.addEventListener('input',function(){
+                this.style.height='auto';
+                this.style.height=(this.scrollHeight)+'px';
+            });
+
+        </script>  
+</body>     
+</html>

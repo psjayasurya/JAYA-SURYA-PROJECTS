@@ -1,0 +1,70 @@
+<html>  
+<head>  
+    <title>PHP login system</title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    
+    <link rel = "stylesheet" type = "text/css" href = "style1.css">   
+</head>  
+<header>
+    <center><h1 style="margin-top: 50px;font-size:20px;margin-left:70px;">Student Complaint Raise System</h1></center>
+</header>
+<body>  
+    <div id = "frm">  
+        <center><h1>Faculty Login</h1></center>
+        <form name="f1" action = "facultyauth.php" onsubmit = "return validation()" method = "POST">  
+             <center><label><b>Dept:</label>
+            <select id="dept" name="dept">
+                <option><b>CSE</option>
+                <option><b>ECE</option>
+                <option><b>MECH</option>
+                <option><b>IT</option>
+                <option><b>CIVIL</option>
+
+            </select>
+            <p>    
+                <label><b>From Date:</label> 
+                <input type =  "date" id = "date" name = "date" required/>  
+            </p>   
+	<p>    
+                <label><b>To Date:</label> 
+                <input type =  "date" id = "date1" name = "date1" required/>  
+            </p>   
+            
+            
+            <p>  
+                <label> Password: </label>  
+                <input type = "password" id ="pass" name  = "pass" required/>  
+            </p> 
+            <p>     
+                <input type =  "submit" id = "btn" value = "Login" />  
+            </p> </center> 
+    
+               
+             
+        </form>  
+    </div>  
+    
+    <script>  
+            function validation()  
+            {  
+                var id=document.f1.user.value;  
+                var ps=document.f1.pass.value;  
+                if(id.length=="" && ps.length=="") {  
+                    alert("User Name and Password fields are empty");  
+                    return false;  
+                }  
+                else  
+                {  
+                    if(id.length=="") {  
+                        alert("User Name is empty");  
+                        return false;  
+                    }   
+                    if (ps.length=="") {  
+                    alert("Password field is empty");  
+                    return false;  
+                    }  
+                }                             
+            }  
+        </script>  
+</body>     
+</html>

@@ -1,0 +1,69 @@
+<html>  
+<head>  
+    <title>PHP login system</title>  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel = "stylesheet" type = "text/css" href = "style1.css">   
+</head>  
+<header>
+    <center><h1 style="margin-top: 50px;font-size:20px;margin-left:70px;">Student Complaint Raise System</h1></center>
+</header>
+
+<body>  
+    <div id = "frm">  
+        <center><h1>Student Login</h1>  
+        <form name="f1" action = "authentication.php" onsubmit = "return validation()" method = "POST">  
+            <p>  
+                <label> <b>UserName: </label>  
+                <input type = "email" id ="user" name  = "user" pattern=".+@gmail.com|.+@svce.edu.in" required />  
+            </p>  
+            <p>  
+                <label> <b>Password: </label>  
+                <input type = "password" id ="pass" name  = "pass" required pattern=".{8,}" /> <br><br>
+                <input type="checkbox" onclick="showpass()" id="showpass">Show password 
+            </p>  
+            <p>     
+                <input type =  "submit" id = "btn" value = "Login" />  
+            </p>  
+    
+                <a href="signup.html">SignUP</a>
+                <a href="faculty.html" id="faculty">Faculty Login</a>
+                <a href="resetpwd.html" id="forgot">Forgot password</a></center>
+            
+             
+        </form>  
+    </div>  
+    
+    <script>  
+            function validation()  
+            {  
+                var id=document.f1.user.value;  
+                var ps=document.f1.pass.value;  
+                if(id.length=="" && ps.length=="") {  
+                    alert("User Name and Password fields are empty");  
+                    return false;  
+                }  
+                else  
+                {  
+                    if(id.length=="") {  
+                        alert("User Name is empty");  
+                        return false;  
+                    }   
+                    if (ps.length=="") {  
+                    alert("Password field is empty");  
+                    return false;  
+                    }  
+                }                             
+            }  
+            function showpass(){
+                var x= document.getElementById("pass");
+                if(x.type=="password"){
+                    x.type="text";
+                
+                } else{
+                    x.type="password";
+                }
+            }
+        </script>  
+</body>     
+</html>
