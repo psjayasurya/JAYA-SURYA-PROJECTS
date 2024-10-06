@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffff4d5"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/my_image_view"
+        android:layout_width="150dp"
+        android:layout_height="210dp"
+        android:layout_gravity="center_vertical|center|center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="250dp"
+        android:src="@drawable/logores" />
+
+   
+
+</LinearLayout>

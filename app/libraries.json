@@ -1,0 +1,14 @@
+[
+  {
+    "artifactId": "volley",
+    "excludes": [],
+    "groupId": "com.android.volley",
+    "versionName": "1.2.1"
+  },
+  {
+    "artifactId": "json",
+    "excludes": [],
+    "groupId": "org.json",
+    "versionName": "20201115"
+  }
+]
