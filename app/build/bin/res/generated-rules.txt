@@ -1,9 +1,0 @@
-# Referenced at /storage/emulated/0/Android/testing/app/build/bin/AndroidManifest.xml:22
--keep class com.my.testing.MainActivity { <init>(); }
-# Referenced at /storage/emulated/0/Android/testing/app/build/bin/AndroidManifest.xml:25
--keep class com.my.testing.intro { <init>(); }
-# Referenced at /storage/emulated/0/Android/testing/app/build/bin/AndroidManifest.xml:35
--keep class com.my.testing.results { <init>(); }
-# Referenced at /storage/emulated/0/Android/testing/app/src/main/res/layout/activity_main.xml:86
--keepclassmembers class * { *** fetchData(android.view.View); }
-
