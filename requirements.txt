@@ -1,0 +1,5 @@
+Flask
+earthengine-api
+requests
+gunicorn
+flask-cors
