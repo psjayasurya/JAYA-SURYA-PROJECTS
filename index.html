@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Project Title</title>
+<meta charset="utf-8">
+<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui" />
+<style> @-ms-viewport { width: device-width; } </style>
+<link rel="stylesheet" href="vendor/reset.min.css">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body class="multiple-scenes view-control-buttons">
+
+   <div id="popupOverlay">
+        <div id="popupContent">
+            <h2>IIT Tirupati Navavishkar Innovation Hub</h2>
+            <img src="hub.jpg" alt="Hub Photo" style="width: 20%; height: 20%;" ><br>
+             <button id="enterTourBtn">Welcome To TIH Virtual Tour</button>
+        </div>
+    </div>
+
+<div id="pano"></div>
+
+<div id="header">
+    <div class="logo-container">
+        <img src="hub.jpg" alt="IIT Tirupati Logo">
+        <div>
+            <div class="institute-name">IIT Tirupati Navavishkar I-Hub Foundation</div>
+            <div class="department-name"><marquee  style="color: rgb(61, 247, 5); font-size: medium;"> Developed by Remote Sensing & GIS Lab</marquee></div>
+        </div>
+    </div>
+</div>
+
+<button slot="hotspot-building1" class="hotspot-button" onclick="window.location.href='http://127.0.0.1:5501/index2.html'"> IIT Tirupati 3D View</button>
+<button slot="hotspot-building1" class="hotspot-button2" onclick="window.location.href='https://05807tmq-4000.inc1.devtunnels.ms/'">Admin Panel</button>
+
+<div id="sceneList">
+  <ul class="scenes">
+    <a href="javascript:void(0)" class="scene" data-id="0-entrance"><li class="text">Entrance</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="1-outside-1"><li class="text">Outside 1</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="2-outside-2"><li class="text">Outside 2</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="3-outside-3"><li class="text">Outside 3</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="4-gym"><li class="text">GYM</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="5-outdoor"><li class="text">Outdoor</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="6-gis--remote-sensing-lab"><li class="text">GIS &amp; Remote Sensing Lab</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="0-meeting-room"><li class="text">Meeting Room</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="0-outside-4"><li class="text">Outside 4</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="0-outside-5"><li class="text">Outside 5</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="0-steps"><li class="text">Steps</li></a>
+    <a href="javascript:void(0)" class="scene" data-id="0-outdoor-2"><li class="text">Outdoor</li></a>
+  </ul>
+</div>
+
+<div id="titleBar">
+  <h1 class="sceneName"></h1>
+</div>
+
+<a href="javascript:void(0)" id="autorotateToggle">
+  <img class="icon off" src="img/play.png">
+  <img class="icon on" src="img/pause.png">
+</a>
+
+<a href="javascript:void(0)" id="fullscreenToggle">
+  <img class="icon off" src="img/fullscreen.png">
+  <img class="icon on" src="img/windowed.png">
+</a>
+
+<a href="javascript:void(0)" id="sceneListToggle">
+  <img class="icon off" src="img/expand.png">
+  <img class="icon on" src="img/collapse.png">
+</a>
+
+<a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1"><img class="icon" src="img/up.png"></a>
+<a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2"><img class="icon" src="img/down.png"></a>
+<a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3"><img class="icon" src="img/left.png"></a>
+<a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4"><img class="icon" src="img/right.png"></a>
+<a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5"><img class="icon" src="img/plus.png"></a>
+<a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6"><img class="icon" src="img/minus.png"></a>
+
+<script src="vendor/screenfull.min.js" ></script>
+<script src="vendor/bowser.min.js" ></script>
+<script src="vendor/marzipano.js" ></script>
+<script src="https://05807tmq-4001.inc1.devtunnels.ms/data.js"></script>
+<script src="index.js"></script>
+
+<script>
+  document.getElementById("enterTourBtn").addEventListener("click", function() {
+    document.getElementById("popupOverlay").style.display = "none";
+  });
+</script>
+
+<!-- 🔽 Toggle button for Floor Map -->
+<button id="toggleFloorMap">Show Floor Map</button>
+
+<div id="floorMapContainer">
+  <img id="floorMap" src="layout.png" alt="Floor Map">
+  <div id="mapMarker"></div>
+</div>
+
+<!-- Popup Overlay for Large Map -->
+<div id="floorMapOverlay">
+  <img id="floorMapLarge" src="layout.png" alt="Large Floor Map">
+</div>
+
+<script>
+  const floorMap = document.getElementById("floorMap");
+  const overlay = document.getElementById("floorMapOverlay");
+  const marker = document.getElementById("mapMarker");
+  const toggleBtn = document.getElementById("toggleFloorMap");
+  const floorMapContainer = document.getElementById("floorMapContainer");
+
+  // Toggle collapse/expand
+  toggleBtn.addEventListener("click", () => {
+    floorMapContainer.classList.toggle("expanded");
+    toggleBtn.innerText = floorMapContainer.classList.contains("expanded")
+      ? "Hide Floor Map"
+      : "Show Floor Map";
+  });
+
+  // Click small map -> enlarge
+  floorMap.addEventListener("click", () => {
+    overlay.style.display = "flex";
+  });
+  // Click overlay -> close
+  overlay.addEventListener("click", () => {
+    overlay.style.display = "none";
+  });
+
+  // Coordinates for each scene
+  const panoPositions = {
+    "0-entrance": { x: 322, y: 106 },
+    "1-outside-1": { x: 322, y: 208 },
+    "2-outside-2": { x: 260, y: 289 },
+    "3-outside-3": { x: 135, y: 268 },
+    "4-gym": { x: 83, y: 230 },
+    "5-outdoor": { x: 84, y: 254 },
+    "6-gis--remote-sensing-lab": { x: 119, y: 239 },
+    "0-meeting-room": { x: 379, y: 212 },
+    "0-outside-4": { x: 321, y: 297 },
+    "0-outside-5": { x: 218, y: 268 },
+    "0-steps": { x: 89, y: 292 },
+    "0-outdoor-2": { x: 369, y: 114 }
+  };
+
+  // Move marker
+  function moveMarker(sceneId) {
+    const pos = panoPositions[sceneId];
+    if (!pos) return;
+    marker.style.left = pos.x + "px";
+    marker.style.top = pos.y + "px";
+  }
+
+  // Detect scene change
+  function onSceneChange(sceneId) {
+    moveMarker(sceneId);
+  }
+
+  // Hook into switchScene
+  const originalSwitchScene = switchScene;
+  switchScene = function(scene) {
+    originalSwitchScene(scene);
+    onSceneChange(scene.data.id);
+  };
+
+  // Track yaw
+  viewer.addEventListener('viewChange', function() {
+    const yaw = view.yaw();
+    marker.style.transform = `translate(-50%, -50%) rotate(${yaw}rad)`;
+  });
+
+  // Start marker at first scene
+  if (scenes && scenes.length > 0) {
+    moveMarker(scenes[0].data.id);
+  }
+</script>
+
+<script>
+  fetch("http://localhost:5000/hotspots")
+  .then(response => response.json())
+  .then(data => {
+    APP_DATA.scenes.forEach(scene => {
+      if (data[scene.id]) {
+        scene.infoHotspots = data[scene.id];
+      }
+    });
+    console.log("APP_DATA updated with DB values:", APP_DATA);
+  })
+  .catch(error => console.error("Error loading hotspots:", error));
+</script>
+
+
+
+
+</body>
+</html>
