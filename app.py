@@ -1,80 +1,64 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from flask_mail import Mail, Message
-from flask_bcrypt import Bcrypt
-from itsdangerous import URLSafeTimedSerializer
-import os
-from dotenv import load_dotenv
-from models.user import create_user, get_user_by_email, verify_user_email
-
-load_dotenv()
+from flask import Flask, jsonify, request, Response
+import psycopg2
+import json
 
 app = Flask(__name__)
-CORS(app)
-bcrypt = Bcrypt(app)
 
-# Secret config
-app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
-app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
-app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
-app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS') == 'True'
-app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+# DB Connection
+def get_db_connection():
+    return psycopg2.connect(
+        host="localhost",
+        database="virtual_toor",
+        user="postgres",
+        password="06092003",
+        port=5433  # Ensure this matches your PostgreSQL port
+            )
 
-mail = Mail(app)
-s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+@app.route('/data.js')
+def generate_data_js():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT scene_id, yaw, pitch, title, text , icon FROM info_hotspots")
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
 
-@app.route('/signup', methods=['POST'])
-def signup():
-    data = request.json
-    email = data['email']
-    password = data['password']
+    # Organize hotspots by scene
+    hotspots_by_scene = {}
+    for scene_id, yaw, pitch, title, text , icon in rows:
+        if scene_id not in hotspots_by_scene:
+            hotspots_by_scene[scene_id] = []
+        hotspots_by_scene[scene_id].append({
+            "yaw": yaw,
+            "pitch": pitch,
+            "title": title,
+            "text": text,
+            "icon": icon
+        })
 
-    if not (email.endswith('@gmail.com') or email.endswith('@iittnif.com')):
-        return jsonify({'error': 'Only @gmail.com and @iittnif.com domains allowed'}), 400
+    # --- Read your existing data.js ---
+    import re
+    with open("data.js", "r", encoding="utf-8") as f:
+        js_content = f.read()
 
-    if get_user_by_email(email):
-        return jsonify({'error': 'User already exists'}), 400
+    # Remove the "var APP_DATA =" and ending ";"
+    json_str = re.sub(r"^var APP_DATA\s*=\s*", "", js_content.strip(), flags=re.DOTALL)
+    json_str = json_str.rstrip(";")
 
-    pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-    create_user(email, pw_hash)
+    # Remove trailing commas (common in JS but invalid in JSON)
+    json_str = re.sub(r",\s*([}\]])", r"\1", json_str)
 
-    token = s.dumps(email, salt='email-verify')
-    link = f"http://10.41.0.100:5000/verify/{token}"
+    app_data = json.loads(json_str)
 
-    msg = Message('Verify your email', sender=app.config['MAIL_USERNAME'], recipients=[email])
-    msg.body = f'Click to verify: {link}'
-    mail.send(msg)
+    # Replace infoHotspots from DB
+    for scene in app_data["scenes"]:
+        sid = scene["id"]
+        scene["infoHotspots"] = hotspots_by_scene.get(sid, [])
 
-    return jsonify({'message': 'Verification link sent to email'})
+    # Rebuild JS file
+    js_code = "var APP_DATA = " + json.dumps(app_data, indent=2) + ";"
+    return Response(js_code, mimetype="application/javascript")
 
-@app.route('/verify/<token>')
-def verify_email(token):
-    try:
-        email = s.loads(token, salt='email-verify', max_age=3600)
-        verify_user_email(email)
-        return "Email verified successfully!"
-    except:
-        return "Invalid or expired token", 400
-
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.json
-    email = data['email']
-    password = data['password']
-
-    user = get_user_by_email(email)
-    if not user:
-        return jsonify({'error': 'User not found'}), 401
-
-    user_id, user_email, user_password, is_verified = user
-    if not is_verified:
-        return jsonify({'error': 'Email not verified'}), 403
-
-    if not bcrypt.check_password_hash(user_password, password):
-        return jsonify({'error': 'Invalid password'}), 401
-
-    return jsonify({'message': 'Login successful'})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=4001)
